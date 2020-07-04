@@ -6,7 +6,10 @@ def stock_search(ssearch):
     try:
         session = HTMLSession()
         web = session.get("http://www.google.com/finance/search?q=" + ssearch)
-        element=web.html.find('div .gsrt',first='true')
+        '''ell = web.html.find('g-card-section .N9cLBc',first='true')
+        da = ell.text
+        print(da)'''
+        element=web.html.find('g-card-section .N9cLBc',first='true')
         data=element.text
         data=list(data)
         try:
@@ -40,7 +43,9 @@ def stock_search(ssearch):
             else:
                 change=float(change[1:])
         try:
-            percent=float(data[3])
+            percent=100*change/(price-change)
+            percent=str(percent)[:6];
+            percent=float(percent);
         except:
             percent=0
 
@@ -51,7 +56,7 @@ def stock_search(ssearch):
         s=list(s)
         try:
             while 1:
-                s.remove(",")
+                s.remove(",");
         except:
             pass
         s="".join(s)

@@ -9,6 +9,47 @@ profileui=uic.loadUi("ui/profile.ui")
 
 homeui=0
 
+def hidfund():
+    profileui.fundbox.hide();
+    profileui.fundbutton.hide();
+
+def showfund():
+    profileui.fundbox.show();
+    profileui.fundbutton.show();
+
+def addfund():
+    amt=profileui.fundbox.text();
+    try:
+        amt=int(amt)
+    except:
+        profileui.fundlabel.setText("enter valid amount")
+        profileui.fundbox.setText("")
+        return False
+    else:
+        if(amt<=0 or amt>10000000):
+            profileui.fundlabel.setText("enter valid amount")
+            profileui.fundbox.setText("")
+            return False
+        else:
+            profileui.fundlabel.setText("Fund Added")
+            profileui.fundbox.setText("")
+
+            conn = sqlite3.connect("database.db")
+            userloggedid = user.getuser()
+            with conn:
+                cmd = conn.cursor()
+                cmd.execute('''
+                        select * from users where user_id=?
+                        ''', (userloggedid,))
+                f = cmd.fetchone()[6]
+                cmd.execute('''
+                update users
+                set fund=? where user_id=?
+                ''', (f+amt,userloggedid))
+                profileui.fundbal.setText(str(f+amt))
+
+
+
 def deluser():
 
     profileui.confirmdel.setText("confirm delete account")
@@ -97,6 +138,7 @@ def showprofile(hui):
     profileui.email.setText(r[3])
     profileui.userid.setText(r[0])
     profileui.acctype.setText(r[5])
+    profileui.fundbal.setText(str(r[6]))
 
     if r[5]=="general":
         profileui.price.setText(user.perstockprice+" per stock")
@@ -107,6 +149,7 @@ def showprofile(hui):
     phones=p[1][1]
     profileui.phonep.setText(phonep)
     profileui.phones.setText(phones)
+    profileui.fundlabel.setText("")
 
     profileui.confirmdel.hide()
     profileui.delbutton.show()
@@ -117,11 +160,20 @@ def showprofile(hui):
     profileui.imgbox.setStyleSheet("background:url("+imgname+");")
 
     profileui.canceldel.hide()
+    if user.admincheck():
+        hidfund()
+        profileui.investment.hide()
+        profileui.delbutton.hide()
+    else:
+        showfund()
+        profileui.investment.show()
+        profileui.delbutton.show()
     global profilebool
     if profilebool:
         profileui.confirmdelbutton.clicked.connect(delaccount)
         profileui.canceldel.clicked.connect(canceldel)
         profileui.delbutton.clicked.connect(deluser)
+        profileui.fundbutton.clicked.connect(addfund)
         profileui.logoutbutton.clicked.connect(logb)
         profileui.investment.clicked.connect(invest)
         profileui.homebutton.clicked.connect(exitb)

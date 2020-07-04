@@ -80,8 +80,8 @@ insert into users(user_id,f_name,l_name,email,pwd)
     values('admin','admin','admin','pythonstockproject@gmail.com','admin')
 
 clientid="pystockclient1"
-clientemail="pythonstockproject@gmail.com"
-clientpassword="DBMStockSProject"
+serveremail="email"
+serverpassword="password"
 adminuserid='admin'
 adminpassword='admin'
 

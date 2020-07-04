@@ -28,7 +28,7 @@ def loaddata(curr,sortparameter,order):
     for i in range(1,len(r)+1):
         sl=stockdb.search_stock_live(r[i-1][0])
         sa=stockdb.search_stock_analysis(r[i-1][0])
-        sc=stockdb.search_company(r[i-1][0])
+        sc=stockdb.search_company(r[i-1][0]);
         tbl.setItem(i,0,QtWidgets.QTableWidgetItem(r[i-1][0]))
         for j in range(0,3):
             tbl.setItem(i,j+1,QtWidgets.QTableWidgetItem(str(sl[j+1])))
@@ -37,7 +37,7 @@ def loaddata(curr,sortparameter,order):
         tbl.item(i, 0).setBackground(QtGui.QColor(171, 181, 164))
         for j in range(0,4):
             tbl.setItem(i,j+4,QtWidgets.QTableWidgetItem(str(sa[j+1])))
-            tbl.item(i, j+4).setTextAlignment(QtCore.Qt.AlignCenter)
+            tbl.item(i, j+4).setTextAlignment(QtCore.Qt.AlignCenter);
             tbl.item(i, j+4).setBackground(QtGui.QColor(149, 181, 157))
         for j in range(0,3):
             tbl.setItem(i,j+8,QtWidgets.QTableWidgetItem(str(sc[j+1])))

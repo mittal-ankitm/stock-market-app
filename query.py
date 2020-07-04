@@ -6,4 +6,6 @@ select * from users;
 ''')
 print(cmd.fetchall())
 conn.commit()
-conn.close()
+conn.close();
+
+input("\n\nenter to exit.....");

@@ -8,7 +8,7 @@ import sqlite3
 import smtplib
 from email.message import EmailMessage
 investmentbool=True
-inui=uic.loadUi("ui/userstock.ui")
+inui=uic.loadUi("ui/userstock.ui");
 profileui=0
 
 def loaduserstock():
@@ -61,46 +61,49 @@ def loaduserstock():
 def endp():
     inui.close()
     profile.hidedel()
+    profileui.fundlabel.hide()
     profileui.show()
 
 def mailstockdata():
-    u=user.getuseremail()
-    msg=EmailMessage()
-    msg['Subject']='stock investment details'
-    msg['From']=user.clientemail
-    msg['To']=user.getuseremail()
+    try:
+        u=user.getuseremail()
+        msg=EmailMessage()
+        msg['Subject']='stock investment details'
+        msg['From']=user.clientemail
+        msg['To']=user.getuseremail()
 
-    userid=user.getuser()
-    conn = sqlite3.connect("database.db")
-    with conn:
-        cmd = conn.cursor()
-        cmd.execute('''
-        select * from investment where user_id=?
-        ''',(userid,))
-        r=cmd.fetchall()
-    conn.close()
-    m="your stock investment details are :\n\n\n"
-    m=m+str("user id : "+userid+"\n\n")
-    if len(r)==0:
-        m="no stocks owned"
-    else:
-        for data in r:
-            m=m+"stock code : "+str(data[1])+"\n"
-            cdetail=stockdb.search_company(data[1])
-            cname=cdetail[1]
-            m=m+"company : "+cname+"\n"
-            m=m+"no. of stock : "+str(data[2])+"\n\n"
+        userid=user.getuser()
+        conn = sqlite3.connect("database.db")
+        with conn:
+            cmd = conn.cursor()
+            cmd.execute('''
+            select * from investment where user_id=?
+            ''',(userid,))
+            r=cmd.fetchall()
+        conn.close()
+        m="your stock investment details are :\n\n\n"
+        m=m+str("user id : "+userid+"\n\n")
+        if len(r)==0:
+            m="no stocks owned"
+        else:
+            for data in r:
+                m=m+"stock code : "+str(data[1])+"\n"
+                cdetail=stockdb.search_company(data[1])
+                cname=cdetail[1]
+                m=m+"company : "+cname+"\n"
+                m=m+"no. of stock : "+str(data[2])+"\n\n"
 
-    msg.set_content(m)
+        msg.set_content(m)
 
-    with smtplib.SMTP_SSL('smtp.gmail.com',465) as smtp:
+        with smtplib.SMTP_SSL('smtp.gmail.com',465) as smtp:
 
-        smtp.login(user.clientemail,user.clientpassword)
+            smtp.login(user.clientemail,user.clientpassword)
 
-        smtp.send_message(msg)
+            smtp.send_message(msg)
 
-    inui.emailmsg.setText("details sent to your registered email")
-
+        inui.emailmsg.setText("details sent to your registered email")
+    except:
+        pass
 
 def userstockdata(profui):
     global profileui

@@ -117,11 +117,11 @@ def validate_reg():
         s = False
 
     if s:
-        t=(userid,fname,lname,email,pwd,acctype)
+        t=(userid,fname,lname,email,pwd,acctype,0)
         conn = sqlite3.connect("database.db")
         with conn:
             cmd = conn.cursor()
-            cmd.execute("insert into users values(?,?,?,?,?,?)",t)
+            cmd.execute("insert into users values(?,?,?,?,?,?,?)",t)
             cmd.execute("insert into user_phone values(?,?)",(userid,phonep))
             cmd.execute("insert into user_phone values(?,?)", (userid, phones))
 
@@ -190,9 +190,11 @@ def reg(hui):
     regui.repwd.setMaxLength(30)
     regui.fname.setText("")
     regui.email.setText("")
-    regui.lname.setText("")
+    regui.lname.setText("");
     regui.pwd.setText("")
     regui.repwd.setText("")
+    regui.phonep.setText("")
+    regui.phones.setText("")
     regui.phonep.setPlaceholderText("Primary Phone")
     regui.phonep.setAlignment(QtCore.Qt.AlignCenter)
     regui.phonep.setMaxLength(10)

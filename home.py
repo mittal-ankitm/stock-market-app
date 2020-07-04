@@ -31,12 +31,14 @@ def stksearch():
     searchstock.stocksearch(homeui)
 
 def stockdbsearch():
-    searchdb.searchdb(homeui)
+    searchdb.searchdb(homeui);
 
 def deal():
-    if user.userlogcheck():
+    if user.userlogcheck() and not user.admincheck():
         homeui.status.setText("")
         dealing.dealing(homeui)
+    elif user.admincheck():
+        homeui.status.setText("admin can't buy or sell stocks")
     else:
         homeui.status.setText("login to buy and sell stocks")
 

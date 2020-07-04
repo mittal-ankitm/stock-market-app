@@ -9,7 +9,7 @@ def search_stock_analysis(scode):
         select * from stock_analysis where stock_code=?
         ''',(scode,))
         r=list(cmd.fetchone())
-    conn.close()
+    conn.close();
     return r
 
 def search_stock_live(scode):

@@ -8,7 +8,7 @@ import datetime
 livestockbool=True
 
 stockui=uic.loadUi("ui/livestock.ui")
-homeui=False
+homeui=False;
 
 def stocklive(hui):
     global homeui

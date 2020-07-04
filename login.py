@@ -8,7 +8,7 @@ def validate_id():
     userid=loginui.userid.text()
     pwd=loginui.pwd.text()
     err=loginui.err
-    err.hide()
+    err.hide();
     s=True
     if len(userid)==0:
         err.setText("enter userid")

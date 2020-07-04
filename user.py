@@ -1,9 +1,9 @@
 import sqlite3
 clientid="pystockclient1"
-clientemail="pythonstockproject@gmail.com"
-clientpassword="DBMStockSProject"
+clientemail="email"
+clientpassword="password"
 adminid='admin'
-
+adminpassword='admin'
 perstockprice="2 USD"
 peryearprice="50 USD"
 
@@ -14,7 +14,7 @@ def userlogcheck():
         cmd.execute('''
         select * from user_status where clientid=?
         ''',(clientid,))
-        r=cmd.fetchall()
+        r=cmd.fetchall();
     conn.close()
     if len(r)==1:
         return True

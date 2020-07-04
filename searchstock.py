@@ -11,7 +11,7 @@ stockdealcode=False
 searchstockbool=True
 searchui=uic.loadUi("ui/searchstock.ui")
 homeui=0
-
+currency="INR"
 
 def showdeal():
     global stockdealcode
@@ -49,6 +49,7 @@ def loaddata():
     global sadd
     global sdel
     global stockdealcode
+    global currency
     t1=searchui.stockanalysis
     t2=searchui.stocklive
     t3=searchui.stockcompany
@@ -110,6 +111,7 @@ def loaddata():
         t3.setItem(0, 1, QtWidgets.QTableWidgetItem(d[3][1]))
         t3.setItem(1, 1, QtWidgets.QTableWidgetItem(str(d[3][2])))
         searchui.notify.setText("")
+        currency=d[1][4]
         if neg(d[2][1]):
             searchui.changeimg.setPixmap(QPixmap('img/down.jpg'))
             searchui.changeimg.show()
@@ -154,11 +156,17 @@ def checkstock(sname):
     conn.close()
     if len(r)>0:
         searchui.addbutton.hide()
-        showdeal()
+        showdeal();
         searchui.delbutton.show()
         hideconfirmdel()
-    else:
+    elif currency=="INR":
         searchui.addbutton.show()
+        hidedeal()
+        searchui.delbutton.hide()
+        hideconfirmdel()
+    else:
+        searchui.addbutton.hide()
+        hidedeal()
         searchui.delbutton.hide()
         hideconfirmdel()
 

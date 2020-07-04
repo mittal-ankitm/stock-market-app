@@ -70,6 +70,23 @@ def buy():
         return False
     conn = sqlite3.connect("database.db")
     with conn:
+        cmd=conn.cursor()
+        cmd.execute('''
+        select * from users where user_id=?
+        ''',(userid,))
+        userfund = cmd.fetchone()[6]
+        cmd.execute('''
+        select * from stock_live where stock_code=?
+        ''',(scode,))
+        price=cmd.fetchone()[1]
+    if(userfund<(price*num)):
+        dealui.notify.setText("not enough fund")
+        hid()
+        return False
+    else:
+        userfund=userfund-price*num
+
+    with conn:
         cmd = conn.cursor()
         cmd.execute('''
         select * from investment where user_id=? and stock_code=?
@@ -86,6 +103,11 @@ def buy():
             update investment
             set count=? where user_id=? and stock_code=?
             ''',(count+num,userid,scode))
+
+        cmd.execute('''
+        update users
+        set fund=? where user_id=?
+        ''', (userfund, userid))
     conn.close()
 
     hid()
@@ -106,6 +128,14 @@ def sell():
     with conn:
         cmd = conn.cursor()
         cmd.execute('''
+                select * from users where user_id=?
+                ''', (userid,))
+        userfund = cmd.fetchone()[6]
+        cmd.execute('''
+                select * from stock_live where stock_code=?
+                ''', (scode,))
+        price = cmd.fetchone()[1]
+        cmd.execute('''
         select * from investment where user_id=? and stock_code=?
         ''',(userid,scode))
         r=cmd.fetchall()
@@ -121,12 +151,17 @@ def sell():
                 update investment
                 set count=? where user_id=? and stock_code=?
                 ''',(count-num,userid,scode))
-                conn.commit()
+
             elif num==count:
                 cmd.execute('''
                 delete from investment
                 where user_id=? and stock_code=?
                 ''',(userid,scode))
+        userfund=userfund+num*price
+        cmd.execute('''
+                update users
+                set fund=? where user_id=?
+                ''', (userfund, userid))
     conn.close()
 
     hid()
@@ -230,7 +265,7 @@ def loadtable():
 def endp():
     dealui.close()
     homeui.status.setText("")
-    homeui.show()
+    homeui.show();
 
 
 def dealing(hui):

@@ -30,7 +30,8 @@ with conn:
     l_name varchar(20),
     email varchar(30) not null,
     pwd varchar(30) not null,
-    acc_type varchar(20)
+    acc_type varchar(20),
+    fund decimal(20,2)
     );
         ''')
     cmd.execute('''
@@ -89,8 +90,8 @@ with conn:
 
 
     cmd.execute('''
-    insert into users(user_id,f_name,l_name,email,pwd,acc_type) 
-    values('admin','admin','admin','pythonstockproject@gmail.com','admin','professional')
+    insert into users(user_id,f_name,l_name,email,pwd,acc_type,fund) 
+    values('admin','admin','admin','pythonstockproject@gmail.com','admin','professional',0)
     ''')
     cmd.execute('''
         insert into pro_account(user_id,per_year) 
@@ -105,4 +106,3 @@ with conn:
                 values('admin','00')
                 ''')
 conn.close()
-=
