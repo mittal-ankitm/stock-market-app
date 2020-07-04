@@ -1,10 +1,9 @@
 HOW TO RUN:
 
 install python and following libraries
-1.PyQt5
 
-2.sqlite3
-
+1.PyQt5 
+2.sqlite3 
 3.requests_html
 
 run home.py
