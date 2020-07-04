@@ -12,6 +12,8 @@ install python and following libraries
 
 run home.py
 
+
+
 HOW TO USE:
 
 there is admin account
@@ -19,6 +21,7 @@ there is admin account
 userid:admin
 
 password:admin
+
 
 
 new user can register and registered user can login
